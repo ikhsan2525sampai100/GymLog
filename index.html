@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Ikhsan's Gym Tracker</title>
+<title>GymLog</title>
 
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, collection, doc, addDoc, deleteDoc, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const app = initializeApp({
@@ -57,7 +57,18 @@ function toast(msg, color='#2ed573'){
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-window.loginGoogle = async () => { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ toast('Login gagal: '+e.message,'#ff4757'); } };
+// Tangkap hasil setelah halaman dialihkan kembali oleh Google
+getRedirectResult(auth).catch((e) => { toast('Login gagal: '+e.message, '#ff4757'); });
+
+window.loginGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithRedirect(auth, provider);
+  } catch(e) { 
+    toast('Login gagal: '+e.message, '#ff4757'); 
+  }
+};
+
 window.logout = async () => { if(unsubHistory) unsubHistory(); await signOut(auth); };
 
 onAuthStateChanged(auth, user => {
