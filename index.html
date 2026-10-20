@@ -45,15 +45,16 @@ const $ = id => document.getElementById(id);
 // ── AUTHENTICATION ──
 getRedirectResult(auth).catch(e => alert('Login error: '+e.message));
 
-window.loginGoogle = async () => {
-  alert("Menghubungkan ke server Google...");
+document.getElementById('btn-login').addEventListener('click', async () => {
+  alert("Sedang mengalihkan ke Google...");
   try {
     const provider = new GoogleAuthProvider();
     await signInWithRedirect(auth, provider);
   } catch(e) {
-    alert("Gagal memuat Google: " + e.message);
+    alert("Gagal login: " + e.message);
   }
-};
+});
+
 
 window.logout = async () => { await signOut(auth); location.reload(); };
 
@@ -206,7 +207,7 @@ body { background: var(--bg); color: var(--text); padding-bottom: 80px; -webkit-
   <div class="hero-icon">⚡</div>
   <h1 style="margin-bottom:10px">Gym <span style="color:var(--cyan)">Tracker</span></h1>
   <p style="color:var(--gray); margin-bottom: 30px; font-size: 14px;">The Ultimate Fitness SuperApp.</p>
-  <button class="btn" style="background:white; color:black; display:flex; gap:10px; justify-content:center; align-items:center;" onclick="loginGoogle()">
+  <button id="btn-login" class="btn" style="background:white; color:black; display:flex; gap:10px; justify-content:center; align-items:center;">
     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18"> Masuk dengan Google
   </button>
 </div>
