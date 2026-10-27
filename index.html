@@ -4,47 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
 <title>Gym Tracker & Lifestyle SuperApp</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--cy:#38bdf8;--em:#10b981;--cr:#ef4444;--tx:#e2e8f0;--mu:#94a3b8;--ln:#334155}
-*{box-sizing:border-box;margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+:root{--bg:#0f172a;--card:#1e293b;--cy:#38bdf8;--em:#10b981;--cr:#ef4444;--tx:#e2e8f0;--mu:#94a3b8;--ln:rgba(148,163,184,.16);--glass:rgba(30,41,59,.62);--dsp:'Unbounded',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--tx);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(60% 40% at 0% 0%,rgba(56,189,248,.22),transparent),radial-gradient(50% 40% at 100% 100%,rgba(16,185,129,.18),transparent)}
 .hide{display:none!important}
-h2{font-size:1.05rem;margin-bottom:10px}
-#auth-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center}
-#auth-screen .btn{max-width:320px}
-#app-screen{max-width:480px;margin:auto;padding:16px 14px calc(84px + env(safe-area-inset-bottom))}
-.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:14px}
-input,select{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:11px;font-size:16px;margin-bottom:8px}
+h1,h2,.tot,.stat b,#e1p{font-family:var(--dsp)}
+h2{font-size:.95rem;font-weight:500;margin-bottom:12px}
+button:focus-visible,label:focus-within{outline:2px solid var(--cy);outline-offset:2px}
+#auth-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:28px;text-align:center}
+#auth-screen h1{font-size:1.7rem;line-height:1.2;font-weight:700}
+#auth-screen p{font-size:1.05rem}
+#auth-screen .btn{max-width:320px;margin-top:10px}
+.logo{width:96px;height:96px;display:grid;place-items:center;font-size:48px;border-radius:28px;background:linear-gradient(135deg,var(--cy),var(--em));box-shadow:0 0 0 6px rgba(56,189,248,.12),0 0 50px rgba(56,189,248,.5);animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 12px rgba(56,189,248,.06),0 0 80px rgba(16,185,129,.55)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#app-screen{max-width:480px;margin:auto;padding:18px 14px calc(104px + env(safe-area-inset-bottom))}
+.card,.stat,.seg{background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--ln)}
+.card{border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:0 12px 32px rgba(2,6,23,.4)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{border-radius:18px;padding:14px 6px;text-align:center}
+.stat b{display:block;font-size:1.15rem;font-weight:700;margin-bottom:4px;background:linear-gradient(135deg,var(--cy),var(--em));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:.72rem;color:var(--mu)}
+input,select{width:100%;background:rgba(15,23,42,.7);color:var(--tx);border:1px solid var(--ln);border-radius:14px;padding:13px;font-size:16px;margin-bottom:8px;outline:0;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--cy);box-shadow:0 0 0 3px rgba(56,189,248,.25)}
 .row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
-.btn{display:block;text-align:center;background:var(--cy);color:#0f172a;border:0;border-radius:10px;padding:12px 18px;font-weight:700;font-size:1rem;width:100%;cursor:pointer}
+.btn{display:block;text-align:center;background:linear-gradient(135deg,var(--cy),var(--em));color:#06202e;border:0;border-radius:14px;padding:14px 18px;font-weight:800;font-size:1rem;width:100%;cursor:pointer;box-shadow:0 8px 24px rgba(56,189,248,.35);transition:transform .15s}
+.btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.6}
-.btn.em{background:var(--em)}
-.btn.cr{background:var(--cr);color:#fff}
-.del{background:none;border:1px solid var(--cr);color:var(--cr);border-radius:8px;padding:4px 8px;font-size:.78rem;cursor:pointer;white-space:nowrap}
-.seg{display:flex;gap:6px;margin-bottom:12px}
-.seg button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--mu);font-weight:600}
-.seg button.on{background:var(--cy);color:#0f172a;border-color:var(--cy)}
-.item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--ln)}
+.btn.em{background:var(--em);color:#04231a;box-shadow:0 8px 24px rgba(16,185,129,.35)}
+.btn.cr{background:var(--cr);color:#fff;box-shadow:0 8px 24px rgba(239,68,68,.3)}
+.cam{padding:30px 18px;font-size:1.05rem}
+.del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.6);color:#fca5a5;border-radius:10px;padding:6px 10px;font-size:.78rem;cursor:pointer;white-space:nowrap}
+.seg{display:flex;gap:6px;padding:5px;border-radius:18px;margin-bottom:14px}
+.seg button{flex:1;padding:11px;border-radius:14px;border:0;background:none;color:var(--mu);font-weight:700;font-size:.95rem}
+.seg button.on{background:linear-gradient(135deg,var(--cy),var(--em));color:#06202e;box-shadow:0 4px 16px rgba(56,189,248,.4)}
+.item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--ln)}
 .mu,.item small{color:var(--mu)}
-.badge{display:inline-block;background:var(--bg);border:1px solid var(--cy);color:var(--cy);border-radius:99px;padding:3px 10px;font-size:.78rem;margin:2px 3px 2px 0}
-.pr{border-color:var(--em);color:var(--em)}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;background:none;border:0;color:var(--mu);padding:9px 2px;font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:2px}
-nav button span{font-size:1.3rem}
+.badge{display:inline-block;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.5);color:var(--cy);border-radius:99px;padding:3px 10px;font-size:.78rem;font-weight:600;margin:2px 3px 2px 0}
+.pr{background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.6);color:#6ee7b7;box-shadow:0 0 14px rgba(16,185,129,.3)}
+#e1p{font-size:1.1rem;font-weight:700;color:var(--cy);text-shadow:0 0 18px rgba(56,189,248,.6);min-height:1.7rem}
+nav{position:fixed;left:0;right:0;bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 24px);max-width:456px;margin:0 auto;display:flex;padding:6px;background:rgba(15,23,42,.78);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--ln);border-radius:26px;box-shadow:0 14px 40px rgba(2,6,23,.6);z-index:5}
+nav button{flex:1;background:none;border:0;border-radius:20px;color:var(--mu);padding:9px 2px;font-size:.68rem;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;transition:.2s}
+nav button span{font-size:1.35rem}
 nav i{font-style:normal}
-nav button.on{color:var(--cy)}
+nav button.on{color:var(--cy);background:rgba(56,189,248,.14);box-shadow:inset 0 0 0 1px rgba(56,189,248,.4),0 0 22px rgba(56,189,248,.25)}
 canvas{width:100%;height:170px;display:block}
-.bar{height:8px;background:var(--bg);border-radius:9px;overflow:hidden;margin:8px 0}
-.bar i{display:block;height:100%;width:0;background:var(--em);transition:width 2s linear}
-#av{width:72px;height:72px;border-radius:50%;border:2px solid var(--cy);object-fit:cover}
-.tot{font-size:1.4rem;color:var(--em);font-weight:700}
+.bar{height:8px;background:rgba(15,23,42,.8);border-radius:9px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--em));box-shadow:0 0 12px var(--em);transition:width 2s linear}
+#av{width:84px;height:84px;border-radius:50%;border:3px solid var(--cy);box-shadow:0 0 28px rgba(56,189,248,.5);object-fit:cover}
+.tot{font-size:1.25rem;color:var(--em);font-weight:700;text-shadow:0 0 16px rgba(16,185,129,.5)}
 </style>
 </head>
 <body>
 
 <div id="auth-screen">
-  <div style="font-size:64px">🏋️</div>
+  <div class="logo">🏋️</div>
   <h1>Gym Tracker &amp; Lifestyle</h1>
   <p class="mu" data-i="tag"></p>
   <button id="btn-google" class="btn" data-i="login"></button>
@@ -53,6 +73,7 @@ canvas{width:100%;height:170px;display:block}
 <div id="app-screen" class="hide">
 
   <section id="p0">
+    <div class="stats" id="stats"></div>
     <div class="seg" id="seg"></div>
     <form id="f-log" class="card">
       <h2 data-i="logT"></h2>
@@ -82,7 +103,7 @@ canvas{width:100%;height:170px;display:block}
   <section id="p2" class="hide">
     <div class="card">
       <h2 data-i="cam"></h2>
-      <label class="btn">📷 <span data-i="snap"></span>
+      <label class="btn cam">📷 <span data-i="snap"></span>
         <input id="cam" type="file" accept="image/*" capture="environment" hidden>
       </label>
       <img id="pv" class="hide" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-top:10px">
@@ -154,18 +175,18 @@ const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestor
 
 /* ===== Bahasa ID / EN ===== */
 const T = {
-id:{tag:'Catat latihan, progres, dan gaya hidup sehat',login:'Masuk dengan Google',connecting:'Menghubungkan Google...',
+id:{tag:'Angkat. Catat. Naik level.',login:'Masuk dengan Google',connecting:'Menghubungkan Google...',
 t0:'Latihan',t1:'Progres',t2:'Gaya Hidup',t3:'Profil',ses:'Sesi',logT:'Catat Latihan',exPh:'Nama latihan (mis. Leg Press)',
 sets:'Set',kg:'Berat (kg)',reps:'Reps',save:'Simpan Latihan',e1:'Est. 1RM',hist:'Riwayat',empty:'Belum ada data.',
-del:'🗑 Hapus Data',sure:'Hapus data ini?',pr:'🏆 PR',pT:'Grafik Progres',lg1:'1RM maks',lg2:'Volume maks',prT:'Riwayat PR',noPR:'Belum ada PR.',
+del:'🗑 Hapus Data',sure:'Hapus data ini?',stE:'Entri',stP:'Rekor PR',stV:'Total volume',pr:'🏆 PR',pT:'Grafik Progres',lg1:'1RM maks',lg2:'Volume maks',prT:'Riwayat PR',noPR:'Belum ada PR.',
 cam:'Kamera AI Kalori Makanan',snap:'Foto Makanan',scan:'Memindai makanan dengan AI...',sim:'Simulasi demo, bukan hasil AI sungguhan.',
 expT:'Pengeluaran Gym',c0:'Bulanan Gym',c1:'Harian Gym',c2:'Bayar Coach',c3:'Makanan / Suplemen',amt:'Jumlah (Rp)',add:'Tambah Pengeluaran',total:'Total:',
 setT:'Atur Profil Gym',gym:'Nama tempat gym',m0:'Harian',m1:'Bulanan',m2:'Tahunan',coach:'Nama coach',city:'Kota / lokasi',saveP:'Simpan Profil',saved:'Profil tersimpan ✅',
 langT:'Bahasa',secT:'Keamanan Data',secTx:'Data dikirim lewat HTTPS (TLS) dan dienkripsi saat disimpan di Firebase.',secOk:'✅ Terenkripsi & tersimpan aman',out:'Keluar'},
-en:{tag:'Track workouts, progress, and a healthy lifestyle',login:'Sign in with Google',connecting:'Connecting to Google...',
+en:{tag:'Lift. Log. Level up.',login:'Sign in with Google',connecting:'Connecting to Google...',
 t0:'Workout',t1:'Progress',t2:'Lifestyle',t3:'Profile',ses:'Session',logT:'Log Workout',exPh:'Exercise name (e.g. Leg Press)',
 sets:'Sets',kg:'Weight (kg)',reps:'Reps',save:'Save Workout',e1:'Est. 1RM',hist:'History',empty:'No data yet.',
-del:'🗑 Delete',sure:'Delete this entry?',pr:'🏆 PR',pT:'Progress Chart',lg1:'Max 1RM',lg2:'Max volume',prT:'PR History',noPR:'No PRs yet.',
+del:'🗑 Delete',sure:'Delete this entry?',stE:'Entries',stP:'PR count',stV:'Total volume',pr:'🏆 PR',pT:'Progress Chart',lg1:'Max 1RM',lg2:'Max volume',prT:'PR History',noPR:'No PRs yet.',
 cam:'AI Food Calorie Camera',snap:'Photo of Food',scan:'Scanning food with AI...',sim:'Demo simulation, not a real AI result.',
 expT:'Gym Expenses',c0:'Gym Monthly',c1:'Gym Daily',c2:'Pay Coach',c3:'Food / Supplements',amt:'Amount (Rp)',add:'Add Expense',total:'Total:',
 setT:'Gym Profile Settings',gym:'Gym name',m0:'Daily',m1:'Monthly',m2:'Yearly',coach:'Coach name',city:'City / location',saveP:'Save Profile',saved:'Profile saved ✅',
@@ -196,6 +217,7 @@ const upd1 = () => { const w = +$('kg').value, r = +$('rp').value; $('e1p').text
 function renderLogs() {
   $('seg').innerHTML = [1, 2, 3].map(n => `<button data-s="${n}" class="${n == ses ? 'on' : ''}">${t('ses')} ${n}</button>`).join('');
   $('lt').textContent = `${t('hist')} · ${t('ses')} ${ses}`;
+  $('stats').innerHTML = [[logs.length, 'stE'], [logs.filter(l => l.pr).length, 'stP'], [Math.round(logs.reduce((a, l) => a + l.vol, 0)).toLocaleString('id-ID'), 'stV']].map(([v, k]) => `<div class="stat"><b>${v}</b><span>${t(k)}</span></div>`).join('');
   const L = logs.filter(l => l.ses == ses).slice(0, 40);
   $('loglist').innerHTML = L.length ? L.map(l => `<div class="item"><div><b>${esc(l.n)}</b> ${l.pr ? `<span class="badge pr">${t('pr')}</span>` : ''}<br><small>${l.s}×${l.r} @ ${l.w} kg · ${t('e1')} ${l.e1} kg · ${l.d}</small></div><button class="del" data-id="${l.id}">${t('del')}</button></div>`).join('') : `<p class="mu">${t('empty')}</p>`;
   $('exl').innerHTML = [...new Set([...DEF, ...logs.map(l => l.n)])].map(n => `<option value="${esc(n)}">`).join('');
@@ -222,13 +244,13 @@ function chart() {
   [['e', '#38bdf8', 'lg1'], ['v', '#10b981', 'lg2']].forEach(([f, col]) => {
     const m = Math.max(...D.map(x => x[1][f])) || 1;
     const pos = (i, v) => [D.length > 1 ? 30 + i * (W - 60) / (D.length - 1) : W / 2, 30 + (H - 80) * (1 - v / m)];
-    k.strokeStyle = col; k.fillStyle = col; k.lineWidth = 4; k.beginPath();
+    k.strokeStyle = col; k.fillStyle = col; k.lineWidth = 4; k.shadowColor = col; k.shadowBlur = 16; k.beginPath();
     D.forEach(([, v], i) => { const [x, y] = pos(i, v[f]); i ? k.lineTo(x, y) : k.moveTo(x, y); });
     k.stroke();
     D.forEach(([, v], i) => { const [x, y] = pos(i, v[f]); k.beginPath(); k.arc(x, y, 6, 0, 7); k.fill(); });
     lg += `<span style="color:${col};margin-right:12px">● ${t(f == 'e' ? 'lg1' : 'lg2')}: ${m.toLocaleString('id-ID')}</span>`;
   });
-  $('lgd').innerHTML = lg;
+  k.shadowBlur = 0; $('lgd').innerHTML = lg;
   k.fillStyle = '#94a3b8'; k.fillText(D[0][0].slice(5), 10, H - 12);
   const e = D[D.length - 1][0].slice(5); k.fillText(e, W - k.measureText(e).width - 10, H - 12);
 }
